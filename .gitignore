@@ -1,0 +1,16 @@
+.DS_Store
+.cache
+.project
+.settings
+.tmproj
+Thumbs.db
+.idea/
+.bundle/
+log/*.log
+tmp/
+Gemfile.lock
+Gemfile.local
+.rspec
+.ruby-version
+*.gem
+gemfiles/*.lock
