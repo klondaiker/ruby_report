@@ -1,86 +1,148 @@
 # Ruby Report
-A simple report generator
+
+Ruby Report is a simple and flexible tool for generating reports in various formats (Hash, CSV, XLSX). The library supports custom headers, data formatting, decorators, and the ability to combine multiple reports.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Key Features](#key-features)
+  - [Report Generation](#report-generation)
+  - [Customizing Headers](#customizing-headers)
+  - [Selecting Columns](#selecting-columns)
+  - [Customizing Rows](#customizing-rows)
+  - [Decorators](#decorators)
+  - [Formatters](#formatters)
+  - [Scope](#scope)
+  - [Combining Reports](#combining-reports)
+  - [Generating XLSX with Multiple Sheets](#generating-xlsx-with-multiple-sheets)
 
 ## Installation
-Add this line to your application's `Gemfile`:
+
+Add the following lines to your application's `Gemfile`:
 
 ```ruby
 gem "ruby_report"
-gem "caxlsx" # optional: for generate xlsx
+gem "caxlsx" # optional: for generating XLSX files
 ```
 
-And then execute:
+Then run:
 
 ```sh
 bundle install
 ```
 
-## Usage
+---
 
-Create class
+## Quick Start
+
+1. Create a report class by inheriting from `RubyReport::Report`:
+
 ```ruby
 class UserReport < RubyReport::Report
   columns :name, :age, :role, :created_at
 end
 ```
 
-Initialize object with data
+2. Initialize the report object with data (ActiveRecord or an array of objects):
+
 ```ruby
-# data is ActiveRecords or array of objects
 report = UserReport.new(data: User.all)
 ```
 
-Generate report
+3. Generate the report in the desired format:
+
 ```ruby
 # Hash
-report.to_h # {header: ["Name", "Age", "Role"], rows: [["Sasha", 18, "Student"]]}
+report.to_h 
+# => {header: ["Name", "Age", "Role"], rows: [["Sasha", 18, "Student"]]}
 
 # CSV
-report.to_csv # IOString
+report.to_csv 
+# => IOString
 
 # XLSX
-report.to_xlsx(worksheet_name: "Worksheet") # IOString
+report.to_xlsx(worksheet_name: "Worksheet") 
+# => IOString
 ```
 
-## Details
-Get header
+---
+
+## Features
+
+### Report Generation
+
+Ruby Report supports multiple output formats:
+
+- **Hash**: Returns a structure with headers and rows.
+- **CSV**: Generates a CSV file.
+- **XLSX**: Creates an Excel file.
+
 ```ruby
-report.header # ["Name", "Age", "Role"]
+report.to_h
+report.to_csv
+report.to_xlsx(worksheet_name: "My Worksheet")
 ```
 
-Default translates for header get from i18n
+---
+
+### Customizing Headers
+
+Headers are fetched from I18n by default:
+
 ```ruby
-I18n.t("ruby_reports.#{report.class.name.underscore}.headers.#{key}")
+I18n.t("ruby_reports.user_report.headers.name") # => "Name"
 ```
 
-Determine custom header
+You can override headers using a custom builder:
+
 ```ruby
-UserReport.new(data: data, header_builder: ->(key, _report) { "Custom #{key}" })
+UserReport.new(
+  data: data,
+  header_builder: ->(key, _report) { "Custom #{key}" }
+)
 ```
 
-Get rows
-```ruby
-report.rows # [["Sasha", 18, "Student"], ["Jack", 30, "Worker"]]
-```
+---
 
-Select columns
+### Selecting Columns
+
+Select only the necessary columns:
+
 ```ruby
 report = UserReport.new(data: data, columns: [:name, :age])
-report.headers #["Name", "Age"]
-report.rows #[["Sasha", 18], ["Jack", 30]]
+report.headers # => ["Name", "Age"]
+report.rows    # => [["Sasha", 18], ["Jack", 30]]
 ```
 
-Custom row
+---
+
+### Customizing Rows
+
+Use `row_resolver` to modify row data:
+
 ```ruby
-UserReport.new(data: data, row_resolver: ->(row) { row.user })
+UserReport.new(
+  data: data,
+  row_resolver: ->(row) { row.user }
+)
 ```
 
-Custom row builder
+Or use `row_builder` for full customization:
+
 ```ruby
-UserReport.new(data: data, row_builder: ->(_row, _key, _report) { "" })
+UserReport.new(
+  data: data,
+  row_builder: ->(_row, key, _report) { key.upcase }
+)
 ```
 
-Decorators
+---
+
+### Decorators
+
+Decorators allow you to modify data before output:
+
 ```ruby
 class UserDecorator < RubyReport::Decorator
   def role
@@ -93,7 +155,11 @@ class UserReport < RubyReport::Report
 end
 ```
 
-Formatters
+---
+
+### Formatters
+
+Formatters transform values into the desired format:
 
 ```ruby
 class TimeFormatter < RubyReport::Formatter
@@ -108,7 +174,12 @@ class UserReport < RubyReport::Report
 end
 ```
 
-Decorator and Formatter with scope
+---
+
+### Scope
+
+Pass additional data through `scope`:
+
 ```ruby
 class UserDecorator < RubyReport::Decorator
   def role
@@ -116,10 +187,14 @@ class UserDecorator < RubyReport::Decorator
   end
 end
 
-report = UserReport.new(data: users, scope: {account: account})
+report = UserReport.new(data: users, scope: { account: account })
 ```
 
-Append/prepend other reports
+---
+
+### Combining Reports
+
+Combine multiple reports into one:
 
 ```ruby
 class AccountReport < RubyReport::Report
@@ -134,12 +209,18 @@ user_report.prepend_report(account_report)
 user_report.add_report(address_report)
 ```
 
-XLSX with any worksheets
+---
+
+### Generating XLSX with Multiple Sheets
+
+Create an XLSX file with multiple sheets:
+
 ```ruby
 require "ruby_report/generator/xlsx"
 
 generator = RubyReport::Generator::Xlsx.new
 generator.add_report(report, worksheet_name: "Worksheet 1")
 generator.add_report(other_report, worksheet_name: "Worksheet 2")
-generator.generate # IOString
+generator.generate # => IOString
 ```
+
