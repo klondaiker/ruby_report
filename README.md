@@ -32,8 +32,6 @@ Then run:
 bundle install
 ```
 
----
-
 ## Quick Start
 
 1. Create a report class by inheriting from `RubyReport::Report`:
