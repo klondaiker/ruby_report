@@ -14,6 +14,13 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github/klondaiker/ruby_report"
   s.license     = "MIT"
   s.required_ruby_version = ">= 2.7.0"
+  s.metadata = {
+    "bug_tracker_uri" => "http://github.com/klondaiker/ruby_report/issues",
+    "changelog_uri" => "https://github.com/klondaiker/ruby_report/blob/main/CHANGELOG.md",
+    "documentation_uri" => "http://github.com/klondaiker/ruby_report",
+    "homepage_uri" => "http://github.com/klondaiker/ruby_report",
+    "source_code_uri" => "http://github.com/klondaiker/ruby_report"
+  }
 
   s.add_development_dependency "bundler", ">= 1.16"
   s.add_development_dependency "rake", ">= 13.0"
