@@ -50,7 +50,7 @@ report.header # ["Name", "Age", "Role"]
 
 Default translates for header get from i18n
 ```ruby
-I18n.t("ruby_reports.#{report.class.name.snake_case}.headers.#{key}")
+I18n.t("ruby_reports.#{report.class.name.underscore}.headers.#{key}")
 ```
 
 Determine custom header

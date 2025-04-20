@@ -4,8 +4,8 @@ require_relative "lib/ruby_report/version"
 
 Gem::Specification.new do |s|
   s.name        = "ruby_report"
-  s.version     = "0.0.1"
-  s.summary     = ::RubyReport::VERSION
+  s.version     = ::RubyReport::VERSION
+  s.summary     = "A simple report generator"
   s.description = "A simple report generator"
   s.authors     = ["Alexandr Zavgorodnev"]
   s.email       = "klondaiker@bk.ru"
