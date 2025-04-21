@@ -23,7 +23,10 @@ Add the following lines to your application's `Gemfile`:
 
 ```ruby
 gem "ruby_report"
-gem "caxlsx" # optional: for generating XLSX files
+
+# optional gems
+gem "csv" # for CSV
+gem "caxlsx" # for XLSX
 ```
 
 Then run:

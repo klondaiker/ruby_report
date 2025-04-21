@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", ">= 3.0"
   s.add_development_dependency "pry", ">= 0.14.2"
 
+  s.add_development_dependency "csv", ">= 3.3.4"
   s.add_development_dependency "caxlsx", ">= 4.0.0"
   s.add_development_dependency "creek", ">= 2.6.3"
 end
