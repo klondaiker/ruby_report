@@ -41,7 +41,7 @@ bundle install
 
 ```ruby
 class UserReport < RubyReport::Report
-  columns :name, :age, :role, :created_at
+  columns :name, :age, :role
 end
 ```
 
